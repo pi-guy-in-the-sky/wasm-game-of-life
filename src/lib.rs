@@ -103,6 +103,18 @@ impl Universe {
         universe
     }
 
+    pub fn from_dimensions(width: u32, height: u32) -> Universe {
+        utils::set_panic_hook();
+
+        let size = (width * height) as usize;
+        let cells = FixedBitSet::with_capacity(size);
+        Universe {
+            width,
+            height,
+            cells,
+        }
+    }
+
     pub fn tick(&mut self) {
         // let _timer = Timer::new("Universe::tick");
         let mut next = self.cells.clone();
@@ -153,16 +165,6 @@ impl Universe {
 
     pub fn cells(&self) -> *const u32 {
         self.cells.as_slice().as_ptr()
-    }
-
-    pub fn set_width(&mut self, width: u32) {
-        self.width = width;
-        self.cells = FixedBitSet::with_capacity((width * self.height) as usize);
-    }
-
-    pub fn set_height(&mut self, height: u32) {
-        self.height = height;
-        self.cells = FixedBitSet::with_capacity((self.width * height) as usize);
     }
 
     pub fn clear(&mut self) {
